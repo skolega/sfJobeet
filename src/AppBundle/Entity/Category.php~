@@ -129,44 +129,4 @@ class Category
         return $this->enabled;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->jobs = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add jobs
-     *
-     * @param \AppBundle\Entity\Job $jobs
-     * @return Category
-     */
-    public function addJob(\AppBundle\Entity\Job $jobs)
-    {
-        $this->jobs[] = $jobs;
-
-        return $this;
-    }
-
-    /**
-     * Remove jobs
-     *
-     * @param \AppBundle\Entity\Job $jobs
-     */
-    public function removeJob(\AppBundle\Entity\Job $jobs)
-    {
-        $this->jobs->removeElement($jobs);
-    }
-
-    /**
-     * Get jobs
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getJobs()
-    {
-        return $this->jobs;
-    }
 }

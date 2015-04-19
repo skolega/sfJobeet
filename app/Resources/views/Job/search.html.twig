@@ -1,0 +1,45 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Wyniki wyszukiwania dla "{{ query }}"{% endblock %}
+
+{% block body %}
+
+    <h1>{{ block('title') }}</h1>
+
+    {% if jobs|length > 0 %}
+        <p>Znaleziono {{ jobs|length }} ofert spełniających kryteria.</p>
+    {% else %}
+        <p>Nie znaleziono żadnych produktów spełniających kryteria wyszukiwania. Spróbuj wyszukać ponownie</p>
+    {% endif %}
+
+    <form action="{{ path('job_search') }}" class="navbar-form" role="search">
+        <div class="form-group">
+            <input type="text" name="query" value="{{ query }}" class="form-control" placeholder="Szukaj ofert">
+        </div>
+        <button type="submit" class="btn btn-default">Szukaj</button>
+    </form>
+        <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Stanowisko</th>
+                <th>Pracodawca</th>
+                <th>Lokalizacja</th>
+                <th>Data dodania</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.position }}</td>
+                    <td>
+                        <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
+                        {{ job.companyName }}
+                    </td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.publishedAt|date('d/m/Y') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

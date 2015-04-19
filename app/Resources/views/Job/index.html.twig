@@ -1,0 +1,32 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Job:index{% endblock %}
+
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Stanowisko</th>
+                <th>Pracodawca</th>
+                <th>Lokalizacja</th>
+                <th>Data dodania</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in pagination %}
+                <tr>
+                    <td>{{ job.position }}</td>
+                    <td>
+                        <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
+                        {{ job.companyName }}
+                    </td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.publishedAt|date('d/m/Y') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

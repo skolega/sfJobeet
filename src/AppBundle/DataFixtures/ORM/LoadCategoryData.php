@@ -10,6 +10,12 @@ use AppBundle\Entity\Category;
 
 class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterface
 {
+    public function getOrder()
+    {
+        return 2;
+    }
+    
+    
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create('pl_PL');
@@ -19,16 +25,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
             $category->setName($faker->word);
             $category->setDescription($faker->text(200));
             $category->setEnabled(1);
+            $this->addReference('category'.$j, $category);
             $manager->persist($category);
         }
         
         $manager->flush();
         
-    }
-    
-    public function getOrder()
-    {
-        return 1;
-    }
+    }  
 }
-

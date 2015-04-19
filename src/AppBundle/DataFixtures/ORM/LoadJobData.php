@@ -9,7 +9,12 @@ use AppBundle\Entity\Job;
 
 
 class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
-{
+{    
+    public function getOrder()
+    {
+        return 3;
+    }
+    
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create('pl_PL');
@@ -21,11 +26,12 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
             $job->setEmail($faker->email);
             $job->setHowToApply($faker->text(100));
             $job->setLocation($faker->city);
-            $job->setLogo('http://dummyimage.com/100/000/fff');
+            $job->setLogo('http://dummyimage.com/50/000/ccc');
             $job->setPublishedAt($faker->dateTimeThisMonth);
             $job->setPosition($faker->word);
             $job->setType($faker->numberBetween($min = 1, $max = 25));
             $job->setUrl($faker->url);
+            $job->setCategory($this->getReference('category' .$faker->numberBetween(0, 19)));
             $manager->persist($job);
         }
         
@@ -33,8 +39,5 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
         
     }
     
-    public function getOrder()
-    {
-        2;
-    }
+
 }

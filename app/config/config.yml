@@ -30,6 +30,12 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
+services:
+ twig.extension.text:
+     class: Twig_Extensions_Extension_Text
+     tags:
+         - { name: twig.extension }
+         
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
@@ -71,3 +77,19 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+knp_paginator:
+    template:
+        pagination: paginator.html.twig
+        
+easy_admin:
+    entities:
+        - AppBundle\Entity\Job
+        - AppBundle\Entity\User
+        - AppBundle\Entity\Category
+    site_name: 'Jobeet'
+    
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
