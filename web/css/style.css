@@ -1,0 +1,37 @@
+body {
+    font-family: 'Open Sans', sans-serif !important;
+    background-color:#EFEFEF !important;
+}
+
+.wrapper{
+    width:98%;
+    margin:auto;
+}
+
+.offer{
+    margin-bottom: 2px;
+}
+
+.navbar, .offer{
+    background-color: white;
+}
+
+.bright{
+    color:#999;
+}
+
+.date{
+    margin-top:33px;
+}
+
+.navbar-brand{
+    font-size: 32px !important;
+}
+
+.blue{
+    color:#08C;
+}
+
+.main{
+    margin-top: 32px;
+}

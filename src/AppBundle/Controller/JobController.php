@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Job;
+use AppBundle\Form\JobType;
 
 class JobController extends Controller
 {
@@ -58,24 +60,32 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/usun/{id}")
-     * @Template()
+     * @Route("/usun/{id}", name="remove_job")
      */
-    public function deleteAction($id)
+    public function deleteAction(Job $job)
     {
-        return array(
-                // ...
-        );
+
+        $em = $this->getDoctrine()
+                ->getManager();
+
+        $em->remove($job);
+        $em->persist();
+
+        return $this->redirectToRoute('jobs_list');
     }
 
     /**
-     * @Route("/dodaj")
+     * @Route("/dodaj", name="add_job")
      */
-    public function addAction()
+    public function addAction(Request $request)
     {
-        return array(
-                // ...
-        );
+        $job = new Job();
+        $form = $this->createForm(new JobType(), $job);
+        $form->handleRequest($request);
+
+        return $this->render('Job/add.html.twig', array(
+                    'form' => $form->createView(),
+        ));
     }
 
     /**

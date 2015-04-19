@@ -22,7 +22,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         
         for($j = 0; $j < 20; $j++){
             $category = new Category();
-            $category->setName($faker->word);
+            $category->setName($faker->colorName);
             $category->setDescription($faker->text(200));
             $category->setEnabled(1);
             $this->addReference('category'.$j, $category);

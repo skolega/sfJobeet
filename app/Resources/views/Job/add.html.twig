@@ -3,5 +3,18 @@
 {% block title %}AppBundle:Job:add{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Job:add page</h1>
+
+    <form method="post" novalidate>
+
+        <div class="form-group">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        {{ form_rest(form) }}
+        <input class="btn btn-success" type="submit" value="Dodaj ofertę" />
+
+
+    </form>
+
 {% endblock %}

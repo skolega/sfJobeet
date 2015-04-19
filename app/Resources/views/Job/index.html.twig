@@ -3,29 +3,23 @@
 {% block title %}AppBundle:Job:index{% endblock %}
 
 {% block body %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Stanowisko</th>
-                <th>Pracodawca</th>
-                <th>Lokalizacja</th>
-                <th>Data dodania</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for job in pagination %}
-                <tr>
-                    <td>{{ job.position }}</td>
-                    <td>
-                        <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
-                        {{ job.companyName }}
-                    </td>
-                    <td>{{ job.location }}</td>
-                    <td>{{ job.publishedAt|date('d/m/Y') }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% for job in pagination %}
+        <div class="row offer">
+            <div class="col-md-2">
+                <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
+            </div>
+            <div class="col-md-8">
+                <h4 class="blue">{{ job.position }}</h4>
+                <p class="bright">{{ job.companyName }}</p>
+                <h6>{{ job.location }}</h6>
+            </div>
+            <div class="col-md-2 bright date">
+                <h6>Data dodania</h6>
+                <p>{{ job.publishedAt|date('d/m/Y') }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>

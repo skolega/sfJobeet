@@ -24,16 +24,25 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         $faker = \Faker\Factory::create('pl_PL');
 
+        $superAdmin = new User;
+        $superAdmin->setUsername('admin');
+        $superAdmin->setEmail('admin@admin.pl');
+        $superAdmin->setPlainPassword('admin');
+        $superAdmin->setEnabled(true);
+        $superAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
+        $superAdmin->setVerified(true);
+
+        $manager->persist($superAdmin);
+
         $admin = new User;
-        $admin->setUsername('admin');
-        $admin->setEmail('admin@admin.pl');
-        $admin->setPlainPassword('admin');
+        $admin->setUsername('user');
+        $admin->setEmail('user@user.pl');
+        $admin->setPlainPassword('user');
         $admin->setEnabled(true);
-        $admin->setRoles(array('ROLE_ADMIN'));
+        $admin->setRoles(array('ROLE_REGISTERED'));
         $admin->setVerified(true);
 
         $manager->persist($admin);
-
 
         for ($i = 0; $i < 20; $i++) {
             $user = new User;
@@ -41,7 +50,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             $user->setEmail($faker->email);
             $user->setPlainPassword($faker->word);
             $user->setEnabled(false);
-            $user->setRoles(array('ROLE_USER'));
+            $user->setRoles(array('ROLE_ADMIN'));
             
             $manager->persist($user);
         }

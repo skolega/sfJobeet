@@ -26,9 +26,9 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
             $job->setEmail($faker->email);
             $job->setHowToApply($faker->text(100));
             $job->setLocation($faker->city);
-            $job->setLogo('http://dummyimage.com/50/000/ccc');
+            $job->setLogo('http://placehold.it/100x100');
             $job->setPublishedAt($faker->dateTimeThisMonth);
-            $job->setPosition($faker->word);
+            $job->setPosition($faker->colorName);
             $job->setType($faker->numberBetween($min = 1, $max = 25));
             $job->setUrl($faker->url);
             $job->setCategory($this->getReference('category' .$faker->numberBetween(0, 19)));

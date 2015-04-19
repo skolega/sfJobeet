@@ -169,4 +169,9 @@ class Category
     {
         return $this->jobs;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
