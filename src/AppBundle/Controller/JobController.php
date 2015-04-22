@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Job;
@@ -222,12 +221,43 @@ class JobController extends Controller
         if (count($lastSean) == 6) {
             array_pop($lastSean);
         }
-        var_dump($lastSean);
         $session->set('lastFive', $lastSean);
 
         return $this->render('Job/show.html.twig', [
                     'job' => $job,
         ]);
+    }
+
+    /**
+     * @Route("/odnow/{id}", name="renew_job")
+     */
+    public function renewAction(Job $job)
+    {
+
+        $user = $this->getUser();
+        
+        $userJob = $this->getDoctrine()
+                ->getRepository('AppBundle:Job')
+                ->find($job);
+
+        if ($job->getPublishedAt() < new \DateTime('-25 days') && 
+                $user == $userJob->getUser() &&
+                $user->hasRole('ROLE_USER')) {
+            
+            $job->setPublishedAt(new \DateTime('now'));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($userJob);
+            $em->flush();
+
+            $this->addFlash('notice', 'Oferta została przedłużona o kolejne 30 dni');
+
+            return $this->redirectToRoute('show_job');
+        }
+
+        $this->addFlash('error', 'Oferta nie może zostać jeszcze przedłużona');
+
+        return $this->redirectToRoute('show_job');
     }
 
 }

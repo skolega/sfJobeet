@@ -84,9 +84,25 @@ knp_paginator:
         
 easy_admin:
     entities:
-        - AppBundle\Entity\Job
-        - AppBundle\Entity\User
-        - AppBundle\Entity\Category
+        Oferty: 
+            class: AppBundle\Entity\Job
+            title: "Lista Ofert"
+            list:
+                    fields: ['id', { property: 'position', label: 'Stanowisko' }, { property: 'location', label: 'Lokalizacja' }, { property: 'companyName', label: 'Firma' }, { property: 'verified', label: 'Zweryfikowana' } { property: 'user', label: 'Użytkownik' }]
+        Użytkownicy: 
+            class: AppBundle\Entity\User
+            title: "Lista Użytkowników"
+            list:
+                fields: [id, { property: 'username', label: 'Użytkownik' }, email, { property: 'roles', label: 'Uprawnienia' }, { property: 'verified', label: 'Zweryfikowany' }, { property: 'enabled', label: 'Aktywny'}]
+            edit:
+                fields: [roles, password, username, email, enabled, verified]
+            new:
+                fields: [roles, plainPassword, username, email, enabled, verified]
+        Kategorie: 
+            class: AppBundle\Entity\Category
+            title: "Lista Użytkowników"
+            list:
+                fields: [id, { property: 'name', label: 'Nazwa' }, { property: 'description', label: 'Opis' }, { property: 'enabled', label: 'Aktywna' }, { property: 'jobs', label: 'Ofert'}]
     site_name: 'Jobeet'
     
 fos_user:

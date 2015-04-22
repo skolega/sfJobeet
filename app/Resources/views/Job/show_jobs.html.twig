@@ -4,28 +4,58 @@
 
 {% block body %}
     {% for job in jobs %}
+        {% if job.publishedAt < "now"|date_modify("-31 day") %}
+            {% set jobEnds = true %}
+        {% else %}
+            {% set jobEnds = false %}
+        {% endif %}
         <a href="{{ path('show_job', {'id':job.id}) }}">
-            <div class="row offer">
-                <div class="col-md-2">
-                    <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
-                </div>
-                <div class="col-md-2 bright">
-                    <h4>Stanowisko:</h4>
-                    <p >Firma:</p>
-                    <h6>Lokalizacja:</h6>
-                </div>
-                <div class="col-md-6">
-                    <h4 class="blue">{{ job.position }}</h4>
-                    <p class="bright">{{ job.companyName }}</p>
-                    <h6>{{ job.location }}</h6>
-                </div>
-                <div class="col-md-2 bright date">
-                    <h6>Data dodania</h6>
-                    <p>{{ job.publishedAt|date('d/m/Y') }}</p>
-                </div>
-            </div>
-        </a>
-    {% endfor %}
+            {% if jobEnds %}
+                <div class="row offer-black">
+                {% else %}
+                    <div class="row offer">
+                    {% endif %}
+                    <div class="col-md-2">
+                        <img src="{{ job.logo }}" tag="{{ job.companyName }} logo" 
+                             class="logo {% if jobEnds %}opacity-low{% endif %}">                       
+                    </div>
+                    <div class="col-md-2 bright">
+                        <h4>Stanowisko:</h4>
+                        <p >Firma:</p>
+                        <h6>Lokalizacja:</h6>
+                    </div>
+                    {% if app.user == job.user %}
+                        <div class="col-md-4">
+                        {% else %}
+                            <div class="col-md-6"> 
+                            {% endif %}
+                            <h4 class="blue">{{ job.position }}</h4>
+                            <p class="bright">{{ job.companyName }}</p>
+                            <h6>{{ job.location }}</h6>
+                        </div>
+                        <div class="col-md-2 bright">
+                            {% if jobEnds %}
+                                <h5 class="offset-top"> OFERTA WYGASŁA </h5>
+                            {% else %}
+                                <h6>Data dodania:  <strong>{{ job.publishedAt|date('d/m/Y') }}</strong></h6>
+                                <h6>Data wygaśnięcia: <strong>{{ job.publishedAt|date_modify("+30 day")|date('d/m/Y') }}</strong></h6>
+                            {% endif %}
+                        </div>
+                        {% if app.user == job.user and app.user %}
+                            <div class="col-md-2 bright">
+                                {%if jobEnds == false %}
+                                    <a href="{{ path('edit_job', {"id": job.id}) }}"class="btn btn-primary btn-block">Edytuj</a>
+                                {% endif %}
+                                {% if job.verified == false and jobEnds %}
+                                    <a href="{{ path('remove_job', {"id": job.id}) }}"class="btn btn-default btn-block">Usuń</a>
+                                {% endif %}
+                                {% if job.publishedAt < "now"|date_modify("-25 day") %}
+                                    <a href="{{ path('renew_job', {"id": job.id}) }}" class="btn btn-warning btn-block">Aktywuj</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    </a>
+                {% endfor %}
 
-{% endblock %}
-{# empty Twig template #}
+            {% endblock %}

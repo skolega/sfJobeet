@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    {% if app.user == job.user %}
+    {% if app.user == job.user and app.user %}
         <a href="{{ path('edit_job', {"id": job.id}) }}" class="btn btn-primary pull-right">Edytuj Ogłoszenie</a>
     {% endif %}
 {% endblock %}

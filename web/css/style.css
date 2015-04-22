@@ -8,8 +8,24 @@ body {
     margin:auto;
 }
 
-.offer{
+.offset-top{
+    margin-top:30px;
+}
+
+.offer, .offer-black{
     margin-bottom: 2px;
+}
+
+.offer-black{
+    background-color: #535353;
+}
+
+.logo{
+    max-height: 100px;
+    max-width: 100px;
+}
+.opacity-low{
+    opacity:0.3;
 }
 
 .navbar, .offer{
@@ -74,4 +90,3 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-

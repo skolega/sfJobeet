@@ -18,9 +18,11 @@ class JobsRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb
-                ->select('j')
+                ->select('j', 'c')
                 ->from('AppBundle:Job', 'j')
-                ->where('j.verified = true');
+                ->innerJoin('j.category', 'c')
+                ->where('j.verified = true')
+                ->andWhere('c.enabled = true');
         if ($category) {
             $qb->andWhere('j.category = :category')
                     ->setParameter('category', $category);

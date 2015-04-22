@@ -26,7 +26,9 @@ class CategoryController extends Controller
                 ->select('c', 'p')
                 ->from('AppBundle:Category', 'c')
                 ->innerJoin('c.jobs', 'p')
-                ->where('p.verified = true');
+                ->where('p.verified = true')
+                ->andWhere('c.enabled = true');
+                
 
         $categories = $qb
                 ->getQuery()

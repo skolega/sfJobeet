@@ -77,8 +77,8 @@ class Job
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(
-     * max="1500", 
-     * maxMessage="Za dużo znaków, maksymalna ilość dla tego pola to {{ limit }}")
+     * max="2000", 
+     * maxMessage="Za dużo tekstu, maksymalna ilość dla tego pola to {{ limit }}")
      * @ORM\Column(name="description", type="text")
      */
     private $description;
