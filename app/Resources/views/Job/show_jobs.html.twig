@@ -2,6 +2,25 @@
 
 {% block title %}AppBundle:Job:show_jobs{% endblock %}
 
+{% block side %}
+    <p>Powiadomienia</p>
+
+    <div class="list-group">
+        {% for job in jobs if job.publishedAt < "now"|date_modify("-25 day") %}
+            <div class="list-group-item">
+                <h6 class="list-group-item-heading">Oferta {{ job.position }} 
+                    {% if job.publishedAt < "now"|date_modify("-30 day") %}
+                        wygasła
+                    {% else %}
+                        wkrótce wygaśnie
+                    {% endif %}</h6>
+                    <a href="{{ path('renew_job', {'id': job.id}) }}" 
+                       class="btn btn-default btn-block">Aktywuj</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
 {% block body %}
     {% for job in jobs %}
         {% if job.publishedAt < "now"|date_modify("-31 day") %}
@@ -44,10 +63,10 @@
                         {% if app.user == job.user and app.user %}
                             <div class="col-md-2 bright">
                                 {%if jobEnds == false %}
-                                    <a href="{{ path('edit_job', {"id": job.id}) }}"class="btn btn-primary btn-block">Edytuj</a>
+                                    <a href="{{ path('edit_job', {"id": job.id}) }}" class="btn btn-primary btn-block">Edytuj</a>
                                 {% endif %}
                                 {% if job.verified == false and jobEnds %}
-                                    <a href="{{ path('remove_job', {"id": job.id}) }}"class="btn btn-default btn-block">Usuń</a>
+                                    <a href="{{ path('remove_job', {"id": job.id}) }}" class="btn btn-default btn-block">Usuń</a>
                                 {% endif %}
                                 {% if job.publishedAt < "now"|date_modify("-25 day") %}
                                     <a href="{{ path('renew_job', {"id": job.id}) }}" class="btn btn-warning btn-block">Aktywuj</a>
