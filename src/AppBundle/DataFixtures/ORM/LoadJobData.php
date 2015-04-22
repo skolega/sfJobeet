@@ -22,16 +22,18 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
         for($j=0 ; $j < 500 ; $j++){
             $job = new Job();
             $job->setCompanyName($faker->company);
-            $job->setDescription($faker->text(400));
-            $job->setEmail($faker->email);
-            $job->setHowToApply($faker->text(100));
+            $job->setDescription($faker->text(2000));
+            $job->setHowToApply($faker->numberBetween($min = 1, $max = 3));
             $job->setLocation($faker->city);
             $job->setLogo('http://placehold.it/100x100');
             $job->setPublishedAt($faker->dateTimeThisMonth);
             $job->setPosition($faker->colorName);
-            $job->setType($faker->numberBetween($min = 1, $max = 25));
+            $job->setType($faker->numberBetween($min = 1, $max = 3));
             $job->setUrl($faker->url);
             $job->setCategory($this->getReference('category' .$faker->numberBetween(0, 19)));
+            $job->setUser($this->getReference('user' .$faker->numberBetween(0, 21)));
+            $job->setEmail($job->getUser()->getEmail());
+            $job->setVerified($faker->boolean(90));
             $manager->persist($job);
         }
         

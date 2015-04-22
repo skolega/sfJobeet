@@ -1,9 +1,9 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Job:index{% endblock %}
+{% block title %}AppBundle:Job:show_jobs{% endblock %}
 
 {% block body %}
-    {% for job in pagination %}
+    {% for job in jobs %}
         <a href="{{ path('show_job', {'id':job.id}) }}">
             <div class="row offer">
                 <div class="col-md-2">
@@ -27,7 +27,5 @@
         </a>
     {% endfor %}
 
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
-    </div>
 {% endblock %}
+{# empty Twig template #}

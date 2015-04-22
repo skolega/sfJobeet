@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Job
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Job
 {
+
     /**
      * @var integer
      *
@@ -23,74 +25,105 @@ class Job
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="companyName", type="string", length=255)
      */
     private $companyName;
 
     /**
      * @var integer
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="type", type="smallint")
      */
     private $type;
 
     /**
      * @var string
-     *
+     * @Assert\Url(message="Należy podać adres url do pliku logo np. http://www.twojastrona.pl/img/logo.jpg")
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo;
 
     /**
      * @var string
-     *
+     * @Assert\Url(message="Należy podać adres url np. http://www.twojastrona.pl")
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min="5", 
+     * max="25", 
+     * minMessage="Minimalna ilość znaków wynosi {{ limit }}",
+     * maxMessage="Maksymalna ilość znaków wynosi {{ limit }}")
      * @ORM\Column(name="position", type="string", length=255)
      */
     private $position;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min="3",
+     *  max="30",
+     * minMessage="Minimalna ilość znaków wynosi {{ limit }}",
+     * maxMessage="Maksymalna ilość znaków wynosi {{ limit }}")
      * @ORM\Column(name="location", type="string", length=255)
      */
     private $location;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     * max="1500", 
+     * maxMessage="Za dużo znaków, maksymalna ilość dla tego pola to {{ limit }}")
      * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
      * @var \DateTime
-     *
+     * 
      * @ORM\Column(name="publishedAt", type="datetime")
      */
     private $publishedAt;
+    public function __construct()
+    {
+        return $this->publishedAt = new \DateTime;
+    }
 
     /**
      * @var integer
-     *
+     * 
      * @ORM\Column(name="howToApply", type="smallint")
      */
     private $howToApply;
 
     /**
      * @var string
-     *
+     * @Assert\Email(message="'{{ value }}' - nie jest prawidłowym adresem email")
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
+    /**
+     * @ORM\Column(name="verified", type="boolean")
+     */
+    private $verified = false;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     */
+    private $user;
+
+    /**
+     * @Assert\NotNull(message="Proszę wybrać odpowiednią kategorię")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="jobs")
+     */
+    private $category;
 
     /**
      * Get id
@@ -101,15 +134,7 @@ class Job
     {
         return $this->id;
     }
-    
-    
-    /**
-     *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="jobs")
-     */
-    private $category;
 
-    
     /**
      * Set companyName
      *
@@ -362,9 +387,56 @@ class Job
     {
         return $this->category;
     }
-    
+
     public function __toString()
     {
         return $this->position;
     }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     * @return Job
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set verified
+     *
+     * @param boolean $verified
+     * @return Job
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
+
+        return $this;
+    }
+
+    /**
+     * Get verified
+     *
+     * @return boolean 
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
 }

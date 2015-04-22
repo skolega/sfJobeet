@@ -30,6 +30,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $superAdmin->setPlainPassword('admin');
         $superAdmin->setEnabled(true);
         $superAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
+        $this->addReference('user20', $superAdmin);
         $superAdmin->setVerified(true);
 
         $manager->persist($superAdmin);
@@ -39,7 +40,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $admin->setEmail('user@user.pl');
         $admin->setPlainPassword('user');
         $admin->setEnabled(true);
-        $admin->setRoles(array('ROLE_REGISTERED'));
+        $admin->setRoles(array('ROLE_ADMIN'));
+        $this->addReference('user21', $admin);
         $admin->setVerified(true);
 
         $manager->persist($admin);
@@ -51,6 +53,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             $user->setPlainPassword($faker->word);
             $user->setEnabled(false);
             $user->setRoles(array('ROLE_ADMIN'));
+            $this->addReference('user'.$i, $user);
             
             $manager->persist($user);
         }

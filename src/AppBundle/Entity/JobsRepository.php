@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use AppBundle\Entity\Job;
 
 /**
  * JobsRepository
@@ -20,12 +19,14 @@ class JobsRepository extends EntityRepository
 
         $qb
                 ->select('j')
-                ->from('AppBundle:Job', 'j');
+                ->from('AppBundle:Job', 'j')
+                ->where('j.verified = true');
         if ($category) {
-            $qb->where('j.category = :category')
+            $qb->andWhere('j.category = :category')
                     ->setParameter('category', $category);
         }
         $qb->orderBy('j.publishedAt', 'DESC');
         return $qb->getQuery();
     }
+
 }

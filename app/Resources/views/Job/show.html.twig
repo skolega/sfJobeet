@@ -1,7 +1,61 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Job:show{% endblock %}
+{% block title %}Jobeet - {{ job.position }}{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Job:show page</h1>
+    <div class="row offer">
+        <div class="wrapper">
+            <div class="col-md-2">
+                <img src="{{ job.logo }}" tag="{{ job.companyName }} logo">
+            </div>
+            <div class="col-md-8">
+                <h4 class="blue">{{ job.position }}</h4>
+                <p class="bright">{{ job.companyName }}</p>
+                <h6>{{ job.location }}</h6>
+            </div>
+            <div class="col-md-2 bright date">
+                <h6>Data dodania</h6>
+                <p>{{ job.publishedAt|date('d/m/Y') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row offer">
+        <div class="wrapper">
+            <div class="col-md-8">
+                <h4 class="bg-primary">Opis</h4>
+                <p>{{ job.description }}</p>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <h4 class="bg-primary">Stanowisko</h4>
+                <p>{{ job.position }}</p>
+                <h4 class="bg-primary">Rodzaj pracy</h4>
+                {% if job.type == 1 %}
+                    <p>full-time<p>
+                    {% elseif job.type == 2 %}
+                    <p>part-time</p>
+                {% else %}
+                    <p>freelance</p>
+                {% endif %}
+                <h4 class="bg-primary">Pracodawca</h4>
+                <p>{{ job.companyName }}</p>
+                <h4 class="bg-primary">Lokalizacja</h4>
+                <p>{{ job.location }}</p>
+                <h4 class="bg-primary">Jak aplikować</h4>
+                {% if  job.howToApply == 1 %}
+                    <p>Send CV to {{ job.email }}<p>
+                    {% elseif  job.howToApply == 2 %}
+                    <p>Call Us</p>
+                {% else %}
+                    <p>Meet Us</p>
+                {% endif %}
+                <h4 class="bg-primary">Kontakt</h4>
+                <p>{{ job.email }}</p>
+                <p>{{ job.url }}</p>
+            </div>
+        </div>
+    </div>
+    {% if app.user == job.user %}
+        <a href="{{ path('edit_job', {"id": job.id}) }}" class="btn btn-primary pull-right">Edytuj Ogłoszenie</a>
+    {% endif %}
 {% endblock %}

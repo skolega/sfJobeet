@@ -1,19 +1,37 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Job:add{% endblock %}
+{% block title %}Dodaj ogłoszenie{% endblock %}
 
 {% block body %}
 
-    <form method="post" novalidate>
-
+    <form method="post" action="{{ path('add_job') }}" novalidate>
+        <h4>Dodaj nową ofertę pracy</h4>
         <div class="form-group">
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+            <div class="row offer">
+                <div class="col-md-8">
+                    <h5>Opis Pracy</h5>
+                    {{ form_row(form.type) }}
+                    {{ form_row(form.position) }}
+                    {{ form_row(form.location) }}
+                    {{ form_row(form.description) }}
+                    {{ form_row(form.howToApply) }}
+                    {{ form_row(form.category) }}
+                    <br>
+                    <button type="submit" class="btn btn-primary pull-right">Dodaj ogłoszenie</button>
+                </div>
+                <div class="col-md-4">
+                    <h5>Dane Firmy</h5>
+                    {{ form_row(form.companyName) }}
+                    {{ form_row(form.logo) }}
+                    {{ form_row(form.url) }}
+                </div>
+            </div>
             {{ form_end(form) }}
-        </div>
-        {{ form_rest(form) }}
-        <input class="btn btn-success" type="submit" value="Dodaj ofertę" />
 
+            {{ form_rest(form) }}
+        </div>
 
     </form>
 

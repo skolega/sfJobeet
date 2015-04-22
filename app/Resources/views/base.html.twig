@@ -45,7 +45,7 @@
                                             <li class="divider"></li>
                                             {% endif %}
                                         <li><a href="{{ path('fos_user_profile_edit') }}">Mój profil</a></li>
-                                        <li><a href="#">Moje ogłoszenia</a></li>
+                                        <li><a href="{{ path('show_job') }}">Moje ogłoszenia</a></li>
                                         <li class="divider"></li>
                                         <li><a href="{{ path('fos_user_security_logout') }}">Wyloguj</a></li>
                                     </ul>
@@ -66,6 +66,17 @@
                 {% endblock %}
             </div>
             <div class="col-md-10 main">
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="alert alert-success" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+
                 {% block body %}
 
                 {% endblock %}

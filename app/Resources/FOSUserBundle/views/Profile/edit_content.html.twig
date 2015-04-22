@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+    <div class="row offer">
+        <form class="form-signin" action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.email, {'attr': {'class': 'form-control input-lg', 'required': 'required'}}) }}
+            {{ form_row(form.username, {'attr': {'class': 'form-control input-lg', 'required': 'required'}}) }}
+            {{ form_row(form.current_password, {'attr': {'class': 'form-control input-lg', 'required': 'required'}}) }}
+            <div>
+                <input class="btn btn-lg btn-primary btn-block" id="_submit" name="_submit" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+            </div>
+            {{ form_end(form) }}
+            {{ form_rest(form) }}
+
+        </form>
+    </div>
+{% endblock %}
