@@ -8,14 +8,18 @@
     <div class="list-group">
         {% for job in jobs if job.publishedAt < "now"|date_modify("-25 day") %}
             <div class="list-group-item">
-                <h6 class="list-group-item-heading">Oferta {{ job.position }} 
+                {% if job.publishedAt < "now"|date_modify("-29 day") %}
+                    <a href="{{ path('remove_job', {"id": job.id}) }}" tag="Usuń" class="close" aria-label="Usuń"><span aria-hidden="true">&times;</span></a>
+                {% endif %}
+                <h6 class="list-group-item-heading">Ogłoszenie : <br>
+                    <strong>{{ job.position }}</strong> </br>
                     {% if job.publishedAt < "now"|date_modify("-30 day") %}
-                        wygasła
+                        <span class="text-warning">wygasło</span>
                     {% else %}
-                        wkrótce wygaśnie
+                        <span class="text-danger">wkrótce wygaśnie</span>
                     {% endif %}</h6>
-                    <a href="{{ path('renew_job', {'id': job.id}) }}" 
-                       class="btn btn-default btn-block">Aktywuj</a>
+                <a href="{{ path('renew_job', {'id': job.id}) }}" 
+                   class="btn btn-default btn-block">Aktywuj</a>
             </div>
         {% endfor %}
     </div>
@@ -23,7 +27,7 @@
 
 {% block body %}
     {% for job in jobs %}
-        {% if job.publishedAt < "now"|date_modify("-31 day") %}
+        {% if job.publishedAt < "now"|date_modify("-30 day") %}
             {% set jobEnds = true %}
         {% else %}
             {% set jobEnds = false %}
@@ -65,7 +69,7 @@
                                 {%if jobEnds == false %}
                                     <a href="{{ path('edit_job', {"id": job.id}) }}" class="btn btn-primary btn-block">Edytuj</a>
                                 {% endif %}
-                                {% if job.verified == false and jobEnds %}
+                                {% if jobEnds %}
                                     <a href="{{ path('remove_job', {"id": job.id}) }}" class="btn btn-default btn-block">Usuń</a>
                                 {% endif %}
                                 {% if job.publishedAt < "now"|date_modify("-25 day") %}

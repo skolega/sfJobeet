@@ -63,15 +63,25 @@ class JobController extends Controller
      */
     public function deleteAction(Job $job)
     {
-
+        $user = $this->getUser();
+        
+        $em = $this->getDoctrine()
+                ->getRepository('AppBundle:Job');
+        $deletedJob = $em->find($job);
         if (!$job) {
             throw $this->createNotFoundException('Oferta nie istnieje');
+        }
+
+        if ($deletedJob->getVerified() == true || $deletedJob->getUser() !== $user) {
+
+            $this->addFlash('error', 'Aktywna oferta nie może zostać usunięta');
+            return $this->redirectToRoute('jobs_list');
         }
 
         $em = $this->getDoctrine()->getManager();
 
         $em->remove($job);
-        $em->persist();
+        $em->flush();
 
         return $this->redirectToRoute('jobs_list');
     }
@@ -235,27 +245,33 @@ class JobController extends Controller
     {
 
         $user = $this->getUser();
-        
+
         $userJob = $this->getDoctrine()
                 ->getRepository('AppBundle:Job')
                 ->find($job);
 
-        if ($job->getPublishedAt() < new \DateTime('-25 days') && 
+        if ($job->getPublishedAt() < new \DateTime('-25 days') &&
                 $user == $userJob->getUser() &&
                 $user->hasRole('ROLE_USER')) {
-            
-            $job->setPublishedAt(new \DateTime('now'));
+
+            $userJob->setPublishedAt(new \DateTime('now'));
+
+            if ($user->getVerified == true) {
+                $userJob->setVerfied(true);
+                $this->addFlash('notice', 'Oferta została przedłużona o kolejne 30 dni');
+            } else {
+                $userJob->setVerified(false);
+                $this->addFlash('notice', 'Oferta została wysłana do sprawdzenia i czeka na moderacje administratora');
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($userJob);
             $em->flush();
 
-            $this->addFlash('notice', 'Oferta została przedłużona o kolejne 30 dni');
-
             return $this->redirectToRoute('show_job');
         }
 
-        $this->addFlash('error', 'Oferta nie może zostać jeszcze przedłużona');
+        $this->addFlash('error', 'Oferta nie może zostać przedłużona');
 
         return $this->redirectToRoute('show_job');
     }
