@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Job;
 use AppBundle\Form\JobType;
@@ -60,6 +61,8 @@ class JobController extends Controller
 
     /**
      * @Route("/usun/{id}", name="remove_job")
+     * @Security("has_role('ROLE_USER')")
+     * @Security("user == job.getUser()")
      */
     public function deleteAction(Job $job)
     {
@@ -68,11 +71,12 @@ class JobController extends Controller
         $em = $this->getDoctrine()
                 ->getRepository('AppBundle:Job');
         $deletedJob = $em->find($job);
+        
         if (!$job) {
             throw $this->createNotFoundException('Oferta nie istnieje');
         }
 
-        if ($deletedJob->getVerified() == true || $deletedJob->getUser() !== $user) {
+        if ($deletedJob->getVerified() == true) {
 
             $this->addFlash('error', 'Aktywna oferta nie może zostać usunięta');
             return $this->redirectToRoute('jobs_list');
@@ -88,6 +92,7 @@ class JobController extends Controller
 
     /**
      * @Route("/dodaj", name="add_job")
+     * @Security("has_role('ROLE_USER')")
      */
     public function addAction(Request $request)
     {
@@ -149,7 +154,8 @@ class JobController extends Controller
 
     /**
      * @Route("/edytuj/{id}", name="edit_job")
-     * 
+     * @Security("has_role('ROLE_USER')")
+     * @Security("user == job.getUser()"))
      */
     public function editAction(Request $request, Job $job)
     {
@@ -240,6 +246,8 @@ class JobController extends Controller
 
     /**
      * @Route("/odnow/{id}", name="renew_job")
+     * @Security("has_role('ROLE_USER')")
+     * @Security("user == job.getUser()")
      */
     public function renewAction(Job $job)
     {
@@ -250,9 +258,7 @@ class JobController extends Controller
                 ->getRepository('AppBundle:Job')
                 ->find($job);
 
-        if ($job->getPublishedAt() < new \DateTime('-25 days') &&
-                $user == $userJob->getUser() &&
-                $user->hasRole('ROLE_USER')) {
+        if ($job->getPublishedAt() < new \DateTime('-25 days')) {
 
             $userJob->setPublishedAt(new \DateTime('now'));
 
